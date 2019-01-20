@@ -13,7 +13,8 @@ class PacmanArena : public QWidget
 
 public:
     PacmanArena(QWidget *parent = 0);
-
+    // void keyPressEvent(QKeyEvent * event);
+    void restartGame();
 signals:
     void foodEaten();
 
@@ -23,8 +24,11 @@ protected:
 private:
     void drawBoard(QPainter &painter);
     void drawFood(QPainter &painter);
+    // void drawPlayer(QPainter &painter, Player &player);
+    bool foodSpawned;
+    void spawnFood();
     Player *player;
-    // std::vector<Food> food;
+    std::vector<QRect> food;
 };
 
 #endif

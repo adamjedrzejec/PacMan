@@ -9,6 +9,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <iostream>
+
 #include "pacmanarena.h"
 #include "gameboard.h"
 
@@ -67,6 +68,6 @@ void GameBoard::increasePoints()
 void GameBoard::newGame()
 {
     points->display(0);
-//     pacmanArena->restartGame();
+    pacmanArena->restartGame();
 }
 

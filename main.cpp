@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
 
     GameBoard board;
     board.setGeometry(100, 100, 800, 900);
+    board.setFixedSize(800, 900);
     board.show();
     return app.exec();
 }
