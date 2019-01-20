@@ -6,11 +6,12 @@
 class Player : public QGraphicsEllipseItem
 {
 public:
-    Player() : xPos(0), yPos(0) {};
+    Player() : xPos(0), yPos(0), radius(10) {};
     // void drawPlayer(int x, int y, QPainter &painter);
     // void keyPressEvent(QKeyEvent * event);
 
     int xPos, yPos;
+    int radius;
     private:
 };
 

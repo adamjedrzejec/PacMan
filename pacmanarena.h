@@ -24,6 +24,7 @@ protected:
 private:
     void drawBoard(QPainter &painter);
     void drawFood(QPainter &painter);
+    void drawPlayer(QPainter &painter, Player *player);
     // void drawPlayer(QPainter &painter, Player &player);
     bool foodSpawned;
     void spawnFood();

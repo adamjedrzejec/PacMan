@@ -13,7 +13,7 @@ PacmanArena::PacmanArena(QWidget *parent)
     setPalette(QPalette(QColor(0, 0, 0)));
     setAutoFillBackground(true);
     foodSpawned = false;
-
+    player = new Player;
 
     // for (int i = 0; i < 31; ++i){
     //     for (int j = 0; j < 28; ++j){
@@ -55,6 +55,7 @@ void PacmanArena::paintEvent(QPaintEvent * /* event */)
 
     drawBoard(painter);
     drawFood(painter);
+    drawPlayer(painter, player);
 
     std::cout << "width: " << rect().width() << " height: " << rect().height() << std::endl;
     
@@ -86,7 +87,14 @@ void PacmanArena::drawFood(QPainter &painter){
 		painter.drawEllipse(*it);
 	}
 
+}
 
+void PacmanArena::drawPlayer(QPainter &painter, Player *player){
+   
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(Qt::yellow);
+ 
+    painter.drawEllipse(player->xPos, player->yPos, player->radius, player->radius);
 }
 
 void PacmanArena::spawnFood(){
@@ -115,5 +123,7 @@ void PacmanArena::spawnFood(){
 // }
 
 void PacmanArena::restartGame(){
-    
+    player->xPos = rect().width();
+    player->yPos = rect().height();
+    player->radius = rect().width() / columns;
 }
