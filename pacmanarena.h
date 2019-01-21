@@ -5,7 +5,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 
-class Player;
+// class Player;
 
 class PacmanArena : public QWidget
 {
@@ -24,11 +24,12 @@ protected:
 private:
     void drawBoard(QPainter &painter);
     void drawFood(QPainter &painter);
-    void drawPlayer(QPainter &painter, Player *player);
+    void drawPlayer(QPainter &painter);
     // void drawPlayer(QPainter &painter, Player &player);
     bool foodSpawned;
     void spawnFood();
-    Player *player;
+    QRect *player;
+    int playerRadius;
     std::vector<QRect> food;
 };
 

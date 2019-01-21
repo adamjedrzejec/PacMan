@@ -13,36 +13,6 @@ PacmanArena::PacmanArena(QWidget *parent)
     setPalette(QPalette(QColor(0, 0, 0)));
     setAutoFillBackground(true);
     foodSpawned = false;
-    player = new Player;
-
-    // for (int i = 0; i < 31; ++i){
-    //     for (int j = 0; j < 28; ++j){
-    //         if (levelBoard[i][j] == 2){
-    //             food.push_back(QRect(j * 1.0 / columns * rect().width() + 1.0 * rect().width() / columns / 3, i * 1.0 / rows * rect().height() + 1.0 * rect().height() / rows / 3, 1.0 * rect().width() / columns / 3, 1.0 * rect().height() / rows / 3));
-    //             // (j * 1.0 / columns * rect().width() + 1.0 * rect().width() / columns / 3, i * 1.0 / rows * rect().height() + 1.0 * rect().height() / rows / 3, 1.0 * rect().width() / columns / 3, 1.0 * rect().height() / rows / 3);
-    //         }
-    //     }
-    // }
-    // std::cout << "width: " << width() << " height: " << height() << std::endl;
-
-    // setPalette(QPalette(QColor(0, 0, 0)));
-    // setAutoFillBackground(true);
-    
-    // for (int i = 0; i < 31; ++i){
-    //     for (int j = 0; j < 28; ++j){
-    //         if (levelBoard[i][j] == 2){
-    //             //food.emplace_back(new Food(j, i));
-                
-    //         }
-    //     }
-    // }
-
-    // scene->addItem(player);
-
-    // player->setFlag(QGraphicsItem::ItemIsFocusable);
-    // player->setFocus();
-
-    // QGraphicsView * view = new QGraphicsView(scene);
 }
 
 
@@ -55,7 +25,7 @@ void PacmanArena::paintEvent(QPaintEvent * /* event */)
 
     drawBoard(painter);
     drawFood(painter);
-    drawPlayer(painter, player);
+    drawPlayer(painter);
 
     std::cout << "width: " << rect().width() << " height: " << rect().height() << std::endl;
     
@@ -89,15 +59,18 @@ void PacmanArena::drawFood(QPainter &painter){
 
 }
 
-void PacmanArena::drawPlayer(QPainter &painter, Player *player){
+void PacmanArena::drawPlayer(QPainter &painter){
    
     painter.setPen(Qt::NoPen);
-    painter.setBrush(Qt::yellow);
+    painter.setBrush(Qt::darkYellow);
  
-    painter.drawEllipse(player->xPos, player->yPos, player->radius, player->radius);
+    painter.drawEllipse(*player);
 }
 
 void PacmanArena::spawnFood(){
+    playerRadius = rect().width() / columns;
+    player = new QRect(13.0 * rect().width() / columns, 17.0 * rect().height() / rows, playerRadius, playerRadius);
+
     for (int i = 0; i < 31; ++i){
         for (int j = 0; j < 28; ++j){
             if (levelBoard[i][j] == 2){
@@ -123,7 +96,7 @@ void PacmanArena::spawnFood(){
 // }
 
 void PacmanArena::restartGame(){
-    player->xPos = rect().width();
-    player->yPos = rect().height();
-    player->radius = rect().width() / columns;
+    // player->xPos = rect().width();
+    // player->yPos = rect().height();
+    // player->radius = rect().width() / columns;
 }
