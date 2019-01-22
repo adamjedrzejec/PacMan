@@ -5,7 +5,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 
-// class Player;
+class Player;
 
 class PacmanArena : public QWidget
 {
@@ -15,11 +15,16 @@ public:
     PacmanArena(QWidget *parent = 0);
     // void keyPressEvent(QKeyEvent * event);
     void restartGame();
+    int playerDir;
 signals:
     void foodEaten();
 
 protected:
     void paintEvent(QPaintEvent *event);
+
+protected slots:
+    // void keyDetected(int);
+    void tick();
 
 private:
     void drawBoard(QPainter &painter);
@@ -28,8 +33,8 @@ private:
     // void drawPlayer(QPainter &painter, Player &player);
     bool foodSpawned;
     void spawnFood();
-    QRect *player;
-    int playerRadius;
+    Player *player;
+    QTimer *timer;
     std::vector<QRect> food;
 };
 

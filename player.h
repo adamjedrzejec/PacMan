@@ -3,6 +3,8 @@
 
 #include <QGraphicsEllipseItem>
 
+class PacmanArena;
+
 class Player : public QGraphicsEllipseItem
 {
 public:
@@ -12,7 +14,10 @@ public:
 
     int xPos, yPos;
     int radius;
-    private:
+    void tick(int &, PacmanArena *);
+private:
+    void move(int &, PacmanArena *);
+    int currentRow, currentColumn;
 };
 
 

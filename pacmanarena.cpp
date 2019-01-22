@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <QGraphicsView>
+#include <QtCore>
 
 #include "pacmanarena.h"
 #include "levelboard.h"
@@ -13,6 +14,9 @@ PacmanArena::PacmanArena(QWidget *parent)
     setPalette(QPalette(QColor(0, 0, 0)));
     setAutoFillBackground(true);
     foodSpawned = false;
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(tick()));
+    timer->start(1000);
 }
 
 
@@ -21,13 +25,16 @@ void PacmanArena::paintEvent(QPaintEvent * /* event */)
     if(!foodSpawned)
         spawnFood();
 
+    player->setFlag(QGraphicsItem::ItemIsFocusable);
+    player->setFocus();
+
     QPainter painter(this);
 
     drawBoard(painter);
     drawFood(painter);
     drawPlayer(painter);
 
-    std::cout << "width: " << rect().width() << " height: " << rect().height() << std::endl;
+    std::cout << "playerDir: " << playerDir << " width: " << rect().width() << " height: " << rect().height() << std::endl;
     
     //emit foodEaten();
 }
@@ -64,12 +71,18 @@ void PacmanArena::drawPlayer(QPainter &painter){
     painter.setPen(Qt::NoPen);
     painter.setBrush(Qt::darkYellow);
  
-    painter.drawEllipse(*player);
+    painter.drawEllipse(player->xPos, player->yPos, player->radius, player->radius);
 }
 
 void PacmanArena::spawnFood(){
-    playerRadius = rect().width() / columns;
-    player = new QRect(13.0 * rect().width() / columns, 17.0 * rect().height() / rows, playerRadius, playerRadius);
+    // playerRadius = rect().width() / columns;
+    player = new Player;
+    playerDir = 0;
+    player->xPos = 13.0 * rect().width() / columns;
+    player->yPos = 17.0 * rect().height() / rows;
+    player->radius = rect().width() / columns;
+
+    // player = new QRect(13.0 * rect().width() / columns, 17.0 * rect().height() / rows, playerRadius, playerRadius);
 
     for (int i = 0; i < 31; ++i){
         for (int j = 0; j < 28; ++j){
@@ -99,4 +112,25 @@ void PacmanArena::restartGame(){
     // player->xPos = rect().width();
     // player->yPos = rect().height();
     // player->radius = rect().width() / columns;
+}
+
+// void PacmanArena::keyDetected(int i){
+//     switch (i){
+//         case 1:
+//             std::cout << "ArrowUp detected" << std::endl;
+//             break;
+//         case 2:
+//             std::cout << "ArrowRight detected" << std::endl;
+//             break;
+//         case 3:
+//             std::cout << "ArrowDown detected" << std::endl;
+//             break;
+//         case 4:
+//             std::cout << "ArrowLeft detected" << std::endl;
+//             break;
+//     }
+    
+// }
+void PacmanArena::tick(){
+    player->tick(playerDir, this);
 }
