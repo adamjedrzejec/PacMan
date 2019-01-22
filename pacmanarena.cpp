@@ -10,29 +10,17 @@
 PacmanArena::PacmanArena(QWidget *parent)
     : QWidget(parent)
 {
-    player = new Player(this);
-    player ->setStartCoordinates(17, 13);
     setPalette(QPalette(QColor(0, 0, 0)));
     setAutoFillBackground(true);
-    foodSpawned = false;
+    player = new Player(this);
+    player->setStartCoordinates(17, 13);
     timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(drawScene()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(this->tick()));
     timer->start(1000);
 }
 
-// void PacmanArena::drawScene(){
-//     QPainter painter(this);
-//     drawBoard(painter);
-//     drawFood(painter);
-//     update();
-// }
-
-
 void PacmanArena::paintEvent(QPaintEvent * /* event */)
 {
-    // if(!foodSpawned)
-        // spawnFood();
-
     // player->setFlag(QGraphicsItem::ItemIsFocusable);
     // player->setFocus();
 
@@ -43,8 +31,6 @@ void PacmanArena::paintEvent(QPaintEvent * /* event */)
     player->drawPlayer(painter);
 
     std::cout << "width: " << rect().width() << " height: " << rect().height() << std::endl;
-    
-    //emit foodEaten();
 }
 
 void PacmanArena::drawBoard(QPainter &painter){
@@ -75,39 +61,12 @@ void PacmanArena::drawFood(QPainter &painter){
     }
 }
 
-// void PacmanArena::drawPlayer(QPainter &painter){
-   
-//     painter.setPen(Qt::NoPen);
-//     painter.setBrush(Qt::darkYellow);
- 
-//     painter.drawEllipse(player->xPos, player->yPos, player->radius, player->radius);
-// }
-
-// void PacmanArena::spawnFood(){
-//     // playerRadius = rect().width() / columns;
-//     player = new Player;
-//     playerDir = 0;
-//     player->xPos = 13.0 * rect().width() / gameColumns;
-//     player->yPos = 17.0 * rect().height() / gameRows;
-//     player->radius = rect().width() / gameColumns;
-
-//     // player = new QRect(13.0 * rect().width() / columns, 17.0 * rect().height() / rows, playerRadius, playerRadius);
-
-//     for (int i = 0; i < 31; ++i){
-//         for (int j = 0; j < 28; ++j){
-//             if (gameMap[i][j] == 2){
-//                 food.push_back(QRect(j * 1.0 / gameColumns * rect().width() + 1.0 * rect().width() / columns / 3, i * 1.0 / rows * rect().height() + 1.0 * rect().height() / rows / 3, 1.0 * rect().width() / columns / 3, 1.0 * rect().height() / rows / 3));
-//                 // (j * 1.0 / columns * rect().width() + 1.0 * rect().width() / columns / 3, i * 1.0 / rows * rect().height() + 1.0 * rect().height() / rows / 3, 1.0 * rect().width() / columns / 3, 1.0 * rect().height() / rows / 3);
-//             }
-//         }
-//     }
-//     std::cout << "FOOD SPAWNED" << std::endl;
-//     foodSpawned = true;
-// }
-
-
+void PacmanArena::tick(){
+    player->tick();
+}
 
 void PacmanArena::restartGame(){
+    std::copy(&gameStartMap[0][0], &gameStartMap[0][0]+gameRows*gameColumns,&gameMap[0][0]);
     // player->xPos = rect().width();
     // player->yPos = rect().height();
     // player->radius = rect().width() / columns;
@@ -128,9 +87,4 @@ void PacmanArena::restartGame(){
 //             std::cout << "ArrowLeft detected" << std::endl;
 //             break;
 //     }
-    
 // }
-
-void PacmanArena::tick(){
-//     player->tick(playerDir, this);
-}
