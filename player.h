@@ -1,23 +1,25 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <QGraphicsEllipseItem>
+#include <QWidget>
 
 class PacmanArena;
 
-class Player : public QGraphicsEllipseItem
+class Player : public QWidget
 {
 public:
-    Player() : xPos(0), yPos(0), radius(10) {};
+    Player(PacmanArena *a, QWidget *parent = 0);
     // void drawPlayer(int x, int y, QPainter &painter);
     // void keyPressEvent(QKeyEvent * event);
-
-    int xPos, yPos;
-    int radius;
-    void tick(int &, PacmanArena *);
+    void tick();
+    void drawPlayer(QPainter &painter);
+    void setStartCoordinates(int row, int col);
 private:
-    void move(int &, PacmanArena *);
+    PacmanArena *arena;
+    void move();
     int currentRow, currentColumn;
+    int radius;
+    int playerDir;
 };
 
 

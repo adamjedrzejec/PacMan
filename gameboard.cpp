@@ -39,11 +39,6 @@ GameBoard::GameBoard(QWidget *parent)
 
     (void) new QShortcut(Qt::CTRL + Qt::Key_Q, this, SLOT(close()));
 
-    (void) new QShortcut(Qt::Key_Up, this, SLOT(UpArrowDetected()));
-    (void) new QShortcut(Qt::Key_Right, this, SLOT(RightArrowDetected()));
-    (void) new QShortcut(Qt::Key_Down, this, SLOT(DownArrowDetected()));
-    (void) new QShortcut(Qt::Key_Left, this, SLOT(LeftArrowDetected()));
-
     QHBoxLayout *topLayout = new QHBoxLayout;
     topLayout->addWidget(quit);
     topLayout->addWidget(points);
@@ -74,24 +69,4 @@ void GameBoard::newGame()
 {
     points->display(0);
     pacmanArena->restartGame();
-}
-
-void GameBoard::UpArrowDetected(){
-    std::cout << "UpArrowDetected" << std::endl;
-    pacmanArena->playerDir = 1;
-}
-
-void GameBoard::RightArrowDetected(){
-    std::cout << "RightArrowDetected" << std::endl;
-    pacmanArena->playerDir = 2;
-}
-
-void GameBoard::DownArrowDetected(){
-    std::cout << "DownArrowDetected" << std::endl;
-    pacmanArena->playerDir = 3;
-}
-
-void GameBoard::LeftArrowDetected(){
-    std::cout << "LeftArrowDetected" << std::endl;
-    pacmanArena->playerDir = 4;
 }
