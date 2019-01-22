@@ -52,6 +52,25 @@ void Player::drawPlayer(QPainter &painter)
     painter.drawEllipse(currentColumn / 28.0 * arena->rect().width(), currentRow / 31.0 * arena->rect().height(), arena->rect().width() / 28.0, arena->rect().height() / 31.0);
 }
 
+void Player::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Up)
+    {
+        playerDir = 2;  //up
+    }
+    if(event->key() == Qt::Key_Down)
+    {
+        playerDir = 4; //down
+    }
+    if(event->key() == Qt::Key_Left)
+    {
+        playerDir = 3; //left
+    }
+    if(event->key() == Qt::Key_Right)
+    {
+        playerDir = 1; //right
+    }
+}
 
 // void Player::drawPlayer(int x, int y, QPainter &painter)
 // {

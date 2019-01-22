@@ -14,6 +14,8 @@ public:
     void tick();
     void drawPlayer(QPainter &painter);
     void setStartCoordinates(int row, int col);
+protected:
+    void keyPressEvent(QKeyEvent *event);
 private:
     PacmanArena *arena;
     void move();

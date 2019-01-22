@@ -15,7 +15,7 @@ PacmanArena::PacmanArena(QWidget *parent)
     player = new Player(this);
     player->setStartCoordinates(17, 13);
     timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(this->tick()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(tick()));
     timer->start(1000);
 }
 
