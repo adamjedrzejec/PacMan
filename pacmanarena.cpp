@@ -12,7 +12,7 @@
 PacmanArena::PacmanArena(QWidget *parent)
     : QWidget(parent)
 {
-    setPalette(QPalette(QColor(0, 0, 0)));
+    setPalette(QPalette(QColor(0, 0, 55)));
     setAutoFillBackground(true);
     player = new Player(this);
     player->setStartCoordinates();
@@ -52,7 +52,7 @@ void PacmanArena::keyPressEvent(QKeyEvent *event)
 
 void PacmanArena::drawBoard(QPainter &painter){
   
-    painter.setPen(Qt::black);
+    painter.setPen(QColor(qRgb(0, 0, 55)));
     painter.setBrush(QColor(qRgb(4, 35, 160)));
 
     for (int i = 0; i < 31; ++i){
@@ -81,7 +81,12 @@ void PacmanArena::drawFood(QPainter &painter){
     for (int i = 0; i < 31; ++i){
         for (int j = 0; j < 28; ++j){
             if (gameMap[i][j] == 2){
+                painter.setBrush(QColor(qRgb(244, 244, 66)));
                 painter.drawEllipse(j * 1.0 / gameColumns * rect().width() + 1.0 * rect().width() / gameColumns / 3, i * 1.0 / gameRows * rect().height() + 1.0 * rect().height() / gameRows / 3, 1.0 * rect().width() / gameColumns / 3, 1.0 * rect().height() / gameRows / 3);
+            } 
+            else if(gameMap[i][j] == 4){
+                painter.setBrush(QColor(qRgb(48, 255, 103)));
+                painter.drawEllipse(j * 1.0 / gameColumns * rect().width() + 1.0 * rect().width() / gameColumns / 4, i * 1.0 / gameRows * rect().height() + 1.0 * rect().height() / gameRows / 4, 1.0 * rect().width() / gameColumns / 2, 1.0 * rect().height() / gameRows / 2);
             }
         }
     }
