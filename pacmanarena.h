@@ -8,6 +8,13 @@
 class Player;
 class Ghost;
 
+enum GameStates
+{
+    GAME,
+    GAME_OVER,
+    YOU_WON
+};
+
 class PacmanArena : public QWidget
 {
     Q_OBJECT
@@ -18,22 +25,25 @@ public:
     PacmanArena(QWidget *parent = 0);
     void restartGame();
     int gameMap[gameRows][gameColumns];
+    void youWon();
 signals:
     void foodEaten();
 protected:
     void paintEvent(QPaintEvent *event);
     void keyPressEvent(QKeyEvent *event);
-
 protected slots:
     void tick();
     void transferPoint();
-
 private:
     void drawBoard(QPainter &painter);
     void drawFood(QPainter &painter);
     Player *player;
     Ghost *ghost;
     QTimer *timer;
+    void checkCollision();
+    GameStates gameStates;
+    int state;
+    int frameDelay;
 
 
     const int gameStartMap[gameRows][gameColumns] = {{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},

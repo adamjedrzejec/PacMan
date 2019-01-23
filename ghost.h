@@ -17,16 +17,14 @@ public:
     void drawGhost(QPainter &painter);
     void setStartCoordinates();
     void tick();
+    int getRow();
+    int getColumn();
+    bool atSpawn;
 private slots:
     void move();
-signals:
-    
-protected:
-    
 private:
     int currentRow, currentColumn;
     bool canBeEaten;
-    bool atSpawn;
     int ghostDir;
     bool movementMade;
 };

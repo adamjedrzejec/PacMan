@@ -71,8 +71,8 @@ void GameBoard::increasePoints()
 {
     points->display(points->value() + 1);
 
-    // if (points->value() == 246)
-        // youWon();
+    if (points->value() == 246)
+        pacmanArena->youWon();
 }
 
 

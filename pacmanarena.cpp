@@ -18,7 +18,9 @@ PacmanArena::PacmanArena(QWidget *parent)
     player->setStartCoordinates();
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(tick()));
-    timer->start(300);
+
+    frameDelay = 200;
+    //timer->start(frameDelay);
 
     connect(player, SIGNAL(foodEaten()),
             this, SLOT(transferPoint()));
@@ -28,18 +30,20 @@ PacmanArena::PacmanArena(QWidget *parent)
 
 void PacmanArena::paintEvent(QPaintEvent * /* event */)
 {
-    // player->setFlag(QGraphicsItem::ItemIsFocusable);
-    // player->setFocus();
-
-
     QPainter painter(this);
 
-    drawBoard(painter);
-    drawFood(painter);
-    player->drawPlayer(painter);
-    ghost->drawGhost(painter);
-
-    std::cout << "width: " << width() << " height: " << height() << std::endl;
+    if (state == GAME){
+        drawBoard(painter);
+        drawFood(painter);
+        player->drawPlayer(painter);
+        ghost->drawGhost(painter);
+    }
+    else if (state == GAME_OVER){
+        painter.drawText(100, 100, "Game over!");
+    }
+    else if (state == YOU_WON){
+        painter.drawText(100, 100, "YOU WON!");
+    }
 }
 
 void PacmanArena::keyPressEvent(QKeyEvent *event)
@@ -86,7 +90,9 @@ void PacmanArena::drawFood(QPainter &painter){
 
 void PacmanArena::tick(){
     player->tick();
+    checkCollision();
     ghost->tick();
+    checkCollision();
     update();
 }
 
@@ -94,28 +100,25 @@ void PacmanArena::transferPoint(){
     emit foodEaten();
 }
 
+void PacmanArena::checkCollision(){
+    if((player->getColumn() == ghost->getColumn()) && (player->getRow() == ghost->getRow())){
+        timer->stop();
+        state = GAME_OVER;
+    }
+}
+
 void PacmanArena::restartGame(){
     std::copy(&gameStartMap[0][0], &gameStartMap[0][0]+gameRows*gameColumns,&gameMap[0][0]);
     player->setStartCoordinates();
+    player->setPlayerDir(0);
+    ghost->setStartCoordinates();
+    ghost->atSpawn = true;
+    timer->start(frameDelay);
+    state = GAME;
     update();
-    // player->xPos = rect().width();
-    // player->yPos = rect().height();
-    // player->radius = rect().width() / columns;
 }
 
-// void PacmanArena::keyDetected(int i){
-//     switch (i){
-//         case 1:
-//             std::cout << "ArrowUp detected" << std::endl;
-//             break;
-//         case 2:
-//             std::cout << "ArrowRight detected" << std::endl;
-//             break;
-//         case 3:
-//             std::cout << "ArrowDown detected" << std::endl;
-//             break;
-//         case 4:
-//             std::cout << "ArrowLeft detected" << std::endl;
-//             break;
-//     }
-// }
+void PacmanArena::youWon(){
+    timer->stop();
+    state = YOU_WON;
+}

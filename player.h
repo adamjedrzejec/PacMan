@@ -6,7 +6,7 @@
 
 class PacmanArena;
 
-enum directions
+enum Directions
 {
     LEFT = 3,
     RIGHT = 1,
@@ -22,6 +22,9 @@ public:
     void tick();
     void drawPlayer(QPainter &painter);
     void setStartCoordinates();
+    int getRow();
+    int getColumn();
+    void setPlayerDir(int);
 signals:
     void foodEaten();
 protected:
@@ -33,7 +36,7 @@ private:
     int currentRow, currentColumn;
     int playerDir;
     int rotation;
-    directions dirs;
+    Directions dirs;
 };
 
 

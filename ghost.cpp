@@ -87,3 +87,7 @@ void Ghost::move()
         }while (!movementMade);
     }
 }
+
+int Ghost::getRow(){ return currentRow; }
+
+int Ghost::getColumn(){ return currentColumn; }

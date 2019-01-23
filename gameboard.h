@@ -12,8 +12,6 @@ class GameBoard : public QWidget
 
 public:
     GameBoard(QWidget *parent = 0);
-signals:
-    // void sendKey(int);
 protected slots:
     void increasePoints();
     void newGame();
