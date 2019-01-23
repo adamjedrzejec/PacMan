@@ -26,7 +26,8 @@ public:
     int getColumn();
     void setPlayerDir(int);
 signals:
-    void foodEaten();
+    void foodEaten(int);
+    void superFoodEaten();
 protected:
     void keyPressEvent(QKeyEvent *event);
 private:

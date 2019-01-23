@@ -20,9 +20,15 @@ Player::Player(PacmanArena *a, QWidget *parent)
 void Player::tick(){
     move();
 
-    if (arena->gameMap[currentRow][currentColumn] == 2){
+    if (arena->gameMap[currentRow][currentColumn] == 2) {
         arena->gameMap[currentRow][currentColumn] = 0;
-        emit foodEaten();
+        emit foodEaten(1);
+    }
+    else if (arena->gameMap[currentRow][currentColumn] == 4) {
+        arena->gameMap[currentRow][currentColumn] = 0;
+        emit foodEaten(10);
+        
+        emit superFoodEaten();
     }
 }
 

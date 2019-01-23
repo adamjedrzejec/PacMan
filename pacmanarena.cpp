@@ -19,12 +19,15 @@ PacmanArena::PacmanArena(QWidget *parent)
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(tick()));
 
-    frameDelay = 100;
+    frameDelay = 200;
 
-    connect(player, SIGNAL(foodEaten()),
-            this, SLOT(transferPoint()));
+    connect(player, SIGNAL(foodEaten(int)),
+            this, SLOT(transferPoint(int)));
 
     ghost = new Ghost(this, player);
+
+    connect(player, SIGNAL(superFoodEaten()),
+            ghost, SLOT(superFoodEaten()));
 }
 
 void PacmanArena::paintEvent(QPaintEvent * /* event */)
@@ -103,14 +106,22 @@ void PacmanArena::tick(){
         youWon();
 }
 
-void PacmanArena::transferPoint(){
-    emit foodEaten();
+void PacmanArena::transferPoint(int howMany){
+    emit foodEaten(howMany);
 }
 
 void PacmanArena::checkCollision(){
     if((player->getColumn() == ghost->getColumn()) && (player->getRow() == ghost->getRow())){
-        timer->stop();
-        state = GAME_OVER;
+        if (!ghost->canBeEaten) {
+            timer->stop();
+            state = GAME_OVER;
+        }
+        else {
+            ghost->setStartCoordinates();
+            ghost->canBeEaten = false;
+            ghost->atSpawn = true;
+            emit(foodEaten(100));
+        }
     }
 }
 

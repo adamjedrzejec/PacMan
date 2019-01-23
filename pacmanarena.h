@@ -27,13 +27,13 @@ public:
     int gameMap[gameRows][gameColumns];
     void youWon();
 signals:
-    void foodEaten();
+    void foodEaten(int);
 protected:
     void paintEvent(QPaintEvent *event);
     void keyPressEvent(QKeyEvent *event);
 protected slots:
     void tick();
-    void transferPoint();
+    void transferPoint(int);
 private:
     void drawBoard(QPainter &painter);
     void drawFood(QPainter &painter);

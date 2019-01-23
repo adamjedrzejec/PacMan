@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "ghost.h"
 #include "gameboard.h"
 
@@ -7,6 +9,7 @@ Ghost::Ghost(PacmanArena *a, Player *p, QWidget *parent)
 {
     arena = a;
     player = p;
+    canBeEatenTimerMax = 40;
     canBeEaten = false;
     setStartCoordinates();
     atSpawn = true;
@@ -26,8 +29,13 @@ void Ghost::drawGhost(QPainter &painter)
         painter.setBrush(QColor(qRgb(252, 76, 12)));
     }
 
-
     painter.drawEllipse(currentColumn / 28.0 * arena->rect().width(), currentRow / 31.0 * arena->rect().height(), arena->rect().width() / 28.0,  arena->rect().height() / 31.0);
+
+    painter.setBrush(QColor(qRgb(255, 76, 0)));
+
+    if (canBeEaten) {
+        painter.drawRect(0, arena->rect().height() / arena->gameRows / 3, arena->rect().width() * canBeEatenTimer / canBeEatenTimerMax, arena->rect().height() / arena->gameRows / 3);
+    }
 }
 
 void Ghost::setStartCoordinates(){
@@ -38,6 +46,12 @@ void Ghost::setStartCoordinates(){
 void Ghost::tick()
 {
     move();
+
+    if (canBeEaten) {
+        canBeEatenTimer--;
+        if (canBeEatenTimer == 0)
+            canBeEaten = false;
+    }
 }
 
 void Ghost::move()
@@ -91,3 +105,8 @@ void Ghost::move()
 int Ghost::getRow(){ return currentRow; }
 
 int Ghost::getColumn(){ return currentColumn; }
+
+void Ghost::superFoodEaten(){
+    canBeEaten = true;
+    canBeEatenTimer = canBeEatenTimerMax;
+}

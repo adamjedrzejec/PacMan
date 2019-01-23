@@ -13,7 +13,7 @@ class GameBoard : public QWidget
 public:
     GameBoard(QWidget *parent = 0);
 protected slots:
-    void increasePoints();
+    void increasePoints(int);
     void newGame();
 protected:
     void keyPressEvent(QKeyEvent *event);

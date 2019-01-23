@@ -20,14 +20,17 @@ public:
     int getRow();
     int getColumn();
     bool atSpawn;
+    bool canBeEaten;
 private slots:
-    void move();
+    void superFoodEaten();
 private:
     int currentRow, currentColumn;
-    bool canBeEaten;
     int ghostDir;
     bool movementMade;
-};
+    void move();
+    int canBeEatenTimer;
+    int canBeEatenTimerMax;
+    };
 
 
 #endif

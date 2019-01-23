@@ -28,8 +28,8 @@ GameBoard::GameBoard(QWidget *parent)
 
     pacmanArena = new PacmanArena;
     pacmanArena->setFocus();
-    connect(pacmanArena, SIGNAL(foodEaten()),
-            this, SLOT(increasePoints()));
+    connect(pacmanArena, SIGNAL(foodEaten(int)),
+            this, SLOT(increasePoints(int)));
 
     QPushButton *restart = new QPushButton(tr("&New Game"));
     restart->setFocusPolicy(Qt::NoFocus);
@@ -67,9 +67,9 @@ void GameBoard::keyPressEvent(QKeyEvent *event)
 }
 
 
-void GameBoard::increasePoints()
+void GameBoard::increasePoints(int howMany)
 {
-    points->display(points->value() + 1);
+    points->display(points->value() + howMany);
 }
 
 
