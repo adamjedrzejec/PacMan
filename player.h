@@ -6,6 +6,14 @@
 
 class PacmanArena;
 
+enum directions
+{
+    LEFT = 3,
+    RIGHT = 1,
+    UP = 2,
+    DOWN = 4
+};
+
 class Player : public QWidget
 {
     Q_OBJECT
@@ -13,7 +21,7 @@ public:
     Player(PacmanArena *a, QWidget *parent = 0);
     void tick();
     void drawPlayer(QPainter &painter);
-    void setStartCoordinates(int row, int col);
+    void setStartCoordinates();
 signals:
     void foodEaten();
 protected:
@@ -25,6 +33,7 @@ private:
     int currentRow, currentColumn;
     int playerDir;
     int rotation;
+    directions dirs;
 };
 
 

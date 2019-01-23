@@ -6,6 +6,7 @@
 #include <QGraphicsScene>
 
 class Player;
+class Ghost;
 
 class PacmanArena : public QWidget
 {
@@ -31,6 +32,7 @@ private:
     void drawBoard(QPainter &painter);
     void drawFood(QPainter &painter);
     Player *player;
+    Ghost *ghost;
     QTimer *timer;
 
 

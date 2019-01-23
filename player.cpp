@@ -26,9 +26,9 @@ void Player::tick(){
     }
 }
 
-void Player::setStartCoordinates(int row, int col){
-    currentColumn = col;
-    currentRow = row;
+void Player::setStartCoordinates(){
+    currentColumn = 13;
+    currentRow = 17;
 }
 
 void Player::move(){
@@ -36,28 +36,28 @@ void Player::move(){
     std::cout << "playerDir: " << playerDir << " currentRow: " << currentRow << " currentColumn: " << currentColumn << std::endl;
     
     
-    if (playerDir == 3 && currentColumn == 0){
+    if (playerDir == LEFT && currentColumn == 0){
         currentColumn = arena->gameColumns;
     }
 
-    if (playerDir == 1 && currentColumn == arena->gameColumns - 1){
+    if (playerDir == RIGHT && currentColumn == arena->gameColumns - 1){
         currentColumn = -1;
     }
 
     switch(playerDir){
-        case 2:
+        case UP:
             if(arena->gameMap[currentRow - 1][currentColumn] != 1)
                 currentRow -= 1;
             break;
-        case 1:
+        case RIGHT:
             if(arena->gameMap[currentRow][currentColumn + 1] != 1)
                 currentColumn += 1;
             break;
-        case 4:
+        case DOWN:
             if((arena->gameMap[currentRow + 1][currentColumn] != 1) && (arena->gameMap[currentRow + 1][currentColumn] != 3))
                 currentRow += 1;
             break;
-        case 3:
+        case LEFT:
             if(arena->gameMap[currentRow][currentColumn - 1] != 1)
                 currentColumn -= 1;
             break;
@@ -85,19 +85,19 @@ void Player::keyPressEvent(QKeyEvent *event)
 {
     if(event->key() == Qt::Key_Up)
     {
-        playerDir = 2;  //up
+        playerDir = UP;  //enum 2
     }
     if(event->key() == Qt::Key_Down)
     {
-        playerDir = 4; //down
+        playerDir = DOWN; //enum 4
     }
     if(event->key() == Qt::Key_Left)
     {
-        playerDir = 3; //left
+        playerDir = LEFT; //enum 3
     }
     if(event->key() == Qt::Key_Right)
     {
-        playerDir = 1; //right
+        playerDir = RIGHT; //enum 1
     }
 }
 

@@ -7,6 +7,7 @@
 
 #include "pacmanarena.h"
 #include "player.h"
+#include "ghost.h"
 
 PacmanArena::PacmanArena(QWidget *parent)
     : QWidget(parent)
@@ -14,7 +15,7 @@ PacmanArena::PacmanArena(QWidget *parent)
     setPalette(QPalette(QColor(0, 0, 0)));
     setAutoFillBackground(true);
     player = new Player(this);
-    player->setStartCoordinates(17, 13);
+    player->setStartCoordinates();
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(tick()));
     timer->start(300);
@@ -22,7 +23,7 @@ PacmanArena::PacmanArena(QWidget *parent)
     connect(player, SIGNAL(foodEaten()),
             this, SLOT(transferPoint()));
 
-    player->setFocus();
+    ghost = new Ghost(this, player);
 }
 
 void PacmanArena::paintEvent(QPaintEvent * /* event */)
@@ -36,8 +37,9 @@ void PacmanArena::paintEvent(QPaintEvent * /* event */)
     drawBoard(painter);
     drawFood(painter);
     player->drawPlayer(painter);
+    ghost->drawGhost(painter);
 
-    std::cout << "width: " << rect().width() << " height: " << rect().height() << std::endl;
+    std::cout << "width: " << width() << " height: " << height() << std::endl;
 }
 
 void PacmanArena::keyPressEvent(QKeyEvent *event)
@@ -48,7 +50,7 @@ void PacmanArena::keyPressEvent(QKeyEvent *event)
 void PacmanArena::drawBoard(QPainter &painter){
   
     painter.setPen(Qt::black);
-    painter.setBrush(Qt::darkBlue);
+    painter.setBrush(QColor(qRgb(4, 35, 160)));
 
     for (int i = 0; i < 31; ++i){
         for (int j = 0; j < 28; ++j){
@@ -58,7 +60,7 @@ void PacmanArena::drawBoard(QPainter &painter){
     }
 
 
-    painter.setBrush(Qt::darkMagenta);
+    painter.setBrush(QColor(qRgb(117, 4, 201)));
 
     for (int i = 0; i < 31; ++i){
         for (int j = 0; j < 28; ++j){
@@ -71,7 +73,7 @@ void PacmanArena::drawBoard(QPainter &painter){
 void PacmanArena::drawFood(QPainter &painter){
     
     painter.setPen(Qt::NoPen);
-    painter.setBrush(Qt::yellow);
+    painter.setBrush(QColor(qRgb(244, 244, 66)));
 
     for (int i = 0; i < 31; ++i){
         for (int j = 0; j < 28; ++j){
@@ -84,6 +86,7 @@ void PacmanArena::drawFood(QPainter &painter){
 
 void PacmanArena::tick(){
     player->tick();
+    ghost->tick();
     update();
 }
 
@@ -93,7 +96,7 @@ void PacmanArena::transferPoint(){
 
 void PacmanArena::restartGame(){
     std::copy(&gameStartMap[0][0], &gameStartMap[0][0]+gameRows*gameColumns,&gameMap[0][0]);
-    player->setStartCoordinates(17, 13);
+    player->setStartCoordinates();
     update();
     // player->xPos = rect().width();
     // player->yPos = rect().height();

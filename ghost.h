@@ -15,15 +15,20 @@ public:
     PacmanArena *arena;
     Player *player;
     void drawGhost(QPainter &painter);
-    void setStartCoordinates(int row, int col);
+    void setStartCoordinates();
+    void tick();
 private slots:
-    void moveGhost();
+    void move();
 signals:
     
 protected:
     
 private:
     int currentRow, currentColumn;
+    bool canBeEaten;
+    bool atSpawn;
+    int ghostDir;
+    bool movementMade;
 };
 
 

@@ -19,6 +19,7 @@ GameBoard::GameBoard(QWidget *parent)
 {
     QPushButton *quit = new QPushButton(tr("&Quit"));
     quit->setFont(QFont("Times", 18, QFont::Bold));
+    quit->setFocusPolicy(Qt::NoFocus);
 
     connect(quit, SIGNAL(clicked()), qApp, SLOT(quit()));
 
@@ -31,7 +32,7 @@ GameBoard::GameBoard(QWidget *parent)
             this, SLOT(increasePoints()));
 
     QPushButton *restart = new QPushButton(tr("&New Game"));
-
+    restart->setFocusPolicy(Qt::NoFocus);
     connect(restart, SIGNAL(clicked()), this, SLOT(newGame()));
 
 
