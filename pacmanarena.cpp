@@ -19,8 +19,7 @@ PacmanArena::PacmanArena(QWidget *parent)
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(tick()));
 
-    frameDelay = 200;
-    //timer->start(frameDelay);
+    frameDelay = 100;
 
     connect(player, SIGNAL(foodEaten()),
             this, SLOT(transferPoint()));
@@ -94,6 +93,9 @@ void PacmanArena::tick(){
     ghost->tick();
     checkCollision();
     update();
+
+    if (!isFoodLeft())
+        youWon();
 }
 
 void PacmanArena::transferPoint(){
@@ -121,4 +123,14 @@ void PacmanArena::restartGame(){
 void PacmanArena::youWon(){
     timer->stop();
     state = YOU_WON;
+}
+
+bool PacmanArena::isFoodLeft(){
+    for (int i = 0; i < gameRows; ++i){
+        for (int j = 0; j < gameColumns; ++j){
+            if (gameMap[i][j] == 2 /*|| gameMap[i][j] == 4*/)
+                return true;
+        }
+    }
+    return false;
 }
