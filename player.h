@@ -2,15 +2,15 @@
 #define PLAYER_H
 
 #include <QWidget>
+#include <QKeyEvent>
 
 class PacmanArena;
 
 class Player : public QWidget
 {
+    Q_OBJECT
 public:
     Player(PacmanArena *a, QWidget *parent = 0);
-    // void drawPlayer(int x, int y, QPainter &painter);
-    // void keyPressEvent(QKeyEvent * event);
     void tick();
     void drawPlayer(QPainter &painter);
     void setStartCoordinates(int row, int col);

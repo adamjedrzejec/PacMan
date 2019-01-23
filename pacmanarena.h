@@ -12,13 +12,16 @@ class PacmanArena : public QWidget
     Q_OBJECT
 
 public:
+    const static int gameRows = 31;
+    const static int gameColumns = 28;
     PacmanArena(QWidget *parent = 0);
-    // void keyPressEvent(QKeyEvent * event);
     void restartGame();
+    int gameMap[gameRows][gameColumns];
 signals:
 
 protected:
     void paintEvent(QPaintEvent *event);
+    void keyPressEvent(QKeyEvent *event);
 
 protected slots:
     void tick();
@@ -29,9 +32,7 @@ private:
     Player *player;
     QTimer *timer;
 
-    const static int gameRows = 31;
-    const static int gameColumns = 28;
-    int gameMap[gameRows][gameColumns];
+
     const int gameStartMap[gameRows][gameColumns] = {{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                                                      {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
                                                      {1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1},

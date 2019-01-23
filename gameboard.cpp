@@ -9,6 +9,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <iostream>
+#include <QKeyEvent>
 
 #include "pacmanarena.h"
 #include "gameboard.h"
@@ -25,7 +26,7 @@ GameBoard::GameBoard(QWidget *parent)
     pacmanBox->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
 
     pacmanArena = new PacmanArena;
-
+    pacmanArena->setFocus();
     connect(pacmanArena, SIGNAL(foodEaten()),
             this, SLOT(increasePoints()));
 
@@ -54,8 +55,14 @@ GameBoard::GameBoard(QWidget *parent)
     gridLayout->setRowStretch(1, 0);
     setLayout(gridLayout);
 
-
+    
     newGame();
+}
+
+
+void GameBoard::keyPressEvent(QKeyEvent *event)
+{
+    QApplication::sendEvent(pacmanArena, event);
 }
 
 

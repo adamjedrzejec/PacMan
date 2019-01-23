@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     GameBoard board;
+    board.setFocus();
     board.setGeometry(100, 100, 800, 900);
     board.setFixedSize(800, 900);
     board.show();

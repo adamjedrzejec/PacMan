@@ -17,7 +17,8 @@ signals:
 protected slots:
     void increasePoints();
     void newGame();
-
+protected:
+    void keyPressEvent(QKeyEvent *event);
 private:
     QLCDNumber *points;
     PacmanArena *pacmanArena;

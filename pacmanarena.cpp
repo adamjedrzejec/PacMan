@@ -1,3 +1,4 @@
+#include <QApplication>
 #include <QPainter>
 #include <iostream>
 #include <vector>
@@ -16,13 +17,15 @@ PacmanArena::PacmanArena(QWidget *parent)
     player->setStartCoordinates(17, 13);
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(tick()));
-    timer->start(1000);
+    timer->start(300);
+    player->setFocus();
 }
 
 void PacmanArena::paintEvent(QPaintEvent * /* event */)
 {
     // player->setFlag(QGraphicsItem::ItemIsFocusable);
     // player->setFocus();
+
 
     QPainter painter(this);
 
@@ -31,6 +34,11 @@ void PacmanArena::paintEvent(QPaintEvent * /* event */)
     player->drawPlayer(painter);
 
     std::cout << "width: " << rect().width() << " height: " << rect().height() << std::endl;
+}
+
+void PacmanArena::keyPressEvent(QKeyEvent *event)
+{
+    QApplication::sendEvent(player, event);
 }
 
 void PacmanArena::drawBoard(QPainter &painter){
@@ -63,6 +71,7 @@ void PacmanArena::drawFood(QPainter &painter){
 
 void PacmanArena::tick(){
     player->tick();
+    update();
 }
 
 void PacmanArena::restartGame(){

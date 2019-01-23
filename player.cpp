@@ -13,10 +13,15 @@ Player::Player(PacmanArena *a, QWidget *parent)
 {
     arena = a;
     setFocusPolicy(Qt::StrongFocus);
+    playerDir = 0;
 }
 
 void Player::tick(){
     move();
+
+    if (arena->gameMap[currentRow][currentColumn] == 2){
+        arena->gameMap[currentRow][currentColumn] = 0;
+    }
 }
 
 void Player::setStartCoordinates(int row, int col){
@@ -26,20 +31,33 @@ void Player::setStartCoordinates(int row, int col){
 
 void Player::move(){
 
-    std::cout << "movementDone currentRow: " << currentRow << " currentColumn: " << currentColumn << std::endl;
+    std::cout << "playerDir: " << playerDir << " currentRow: " << currentRow << " currentColumn: " << currentColumn << std::endl;
+    
+    
+    if (playerDir == 4 && currentColumn == 0){
+        currentColumn = arena->gameColumns;
+    }
+
+    if (playerDir == 2 && currentColumn == arena->gameColumns - 1){
+        currentColumn = -1;
+    }
 
     switch(playerDir){
         case 1:
-            currentRow -= 1;
+            if(arena->gameMap[currentRow - 1][currentColumn] != 1)
+                currentRow -= 1;
             break;
         case 2:
-            currentColumn += 1;
+            if(arena->gameMap[currentRow][currentColumn + 1] != 1)
+                currentColumn += 1;
             break;
         case 3:
-            currentRow += 1;
+            if(arena->gameMap[currentRow + 1][currentColumn] != 1)
+                currentRow += 1;
             break;
         case 4:
-            currentColumn += 1;
+            if(arena->gameMap[currentRow][currentColumn - 1] != 1)
+                currentColumn -= 1;
             break;
     }
 }
@@ -47,7 +65,7 @@ void Player::move(){
 void Player::drawPlayer(QPainter &painter)
 {
     painter.setPen(Qt::NoPen);
-    painter.setBrush(Qt::yellow);
+    painter.setBrush(QColor(qRgb(234, 222, 51)));
     
     painter.drawEllipse(currentColumn / 28.0 * arena->rect().width(), currentRow / 31.0 * arena->rect().height(), arena->rect().width() / 28.0, arena->rect().height() / 31.0);
 }
@@ -56,19 +74,19 @@ void Player::keyPressEvent(QKeyEvent *event)
 {
     if(event->key() == Qt::Key_Up)
     {
-        playerDir = 2;  //up
+        playerDir = 1;  //up
     }
     if(event->key() == Qt::Key_Down)
     {
-        playerDir = 4; //down
+        playerDir = 3; //down
     }
     if(event->key() == Qt::Key_Left)
     {
-        playerDir = 3; //left
+        playerDir = 4; //left
     }
     if(event->key() == Qt::Key_Right)
     {
-        playerDir = 1; //right
+        playerDir = 2; //right
     }
 }
 
