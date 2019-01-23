@@ -14,6 +14,7 @@ Player::Player(PacmanArena *a, QWidget *parent)
     arena = a;
     setFocusPolicy(Qt::StrongFocus);
     playerDir = 0;
+    animationTimer = 0;
 }
 
 void Player::tick(){
@@ -21,6 +22,7 @@ void Player::tick(){
 
     if (arena->gameMap[currentRow][currentColumn] == 2){
         arena->gameMap[currentRow][currentColumn] = 0;
+        emit foodEaten();
     }
 }
 
@@ -34,28 +36,28 @@ void Player::move(){
     std::cout << "playerDir: " << playerDir << " currentRow: " << currentRow << " currentColumn: " << currentColumn << std::endl;
     
     
-    if (playerDir == 4 && currentColumn == 0){
+    if (playerDir == 3 && currentColumn == 0){
         currentColumn = arena->gameColumns;
     }
 
-    if (playerDir == 2 && currentColumn == arena->gameColumns - 1){
+    if (playerDir == 1 && currentColumn == arena->gameColumns - 1){
         currentColumn = -1;
     }
 
     switch(playerDir){
-        case 1:
+        case 2:
             if(arena->gameMap[currentRow - 1][currentColumn] != 1)
                 currentRow -= 1;
             break;
-        case 2:
+        case 1:
             if(arena->gameMap[currentRow][currentColumn + 1] != 1)
                 currentColumn += 1;
             break;
-        case 3:
-            if(arena->gameMap[currentRow + 1][currentColumn] != 1)
+        case 4:
+            if((arena->gameMap[currentRow + 1][currentColumn] != 1) && (arena->gameMap[currentRow + 1][currentColumn] != 3))
                 currentRow += 1;
             break;
-        case 4:
+        case 3:
             if(arena->gameMap[currentRow][currentColumn - 1] != 1)
                 currentColumn -= 1;
             break;
@@ -66,27 +68,36 @@ void Player::drawPlayer(QPainter &painter)
 {
     painter.setPen(Qt::NoPen);
     painter.setBrush(QColor(qRgb(234, 222, 51)));
-    
-    painter.drawEllipse(currentColumn / 28.0 * arena->rect().width(), currentRow / 31.0 * arena->rect().height(), arena->rect().width() / 28.0, arena->rect().height() / 31.0);
+
+    rotation = (playerDir - 1) * 90 + 45;
+
+    if (animationTimer == 0)
+        painter.drawPie(currentColumn / 28.0 * arena->rect().width(), currentRow / 31.0 * arena->rect().height(), arena->rect().width() / 28.0,  arena->rect().height() / 31.0, rotation * 16, 270 * 16);
+    else
+        painter.drawPie(currentColumn / 28.0 * arena->rect().width(), currentRow / 31.0 * arena->rect().height(), arena->rect().width() / 28.0,  arena->rect().height() / 31.0, (rotation - 30) * 16, 330 * 16);
+
+    ++animationTimer;
+
+    animationTimer %= 2;
 }
 
 void Player::keyPressEvent(QKeyEvent *event)
 {
     if(event->key() == Qt::Key_Up)
     {
-        playerDir = 1;  //up
+        playerDir = 2;  //up
     }
     if(event->key() == Qt::Key_Down)
     {
-        playerDir = 3; //down
+        playerDir = 4; //down
     }
     if(event->key() == Qt::Key_Left)
     {
-        playerDir = 4; //left
+        playerDir = 3; //left
     }
     if(event->key() == Qt::Key_Right)
     {
-        playerDir = 2; //right
+        playerDir = 1; //right
     }
 }
 

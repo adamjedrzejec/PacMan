@@ -18,6 +18,10 @@ PacmanArena::PacmanArena(QWidget *parent)
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(tick()));
     timer->start(300);
+
+    connect(player, SIGNAL(foodEaten()),
+            this, SLOT(transferPoint()));
+
     player->setFocus();
 }
 
@@ -48,9 +52,18 @@ void PacmanArena::drawBoard(QPainter &painter){
 
     for (int i = 0; i < 31; ++i){
         for (int j = 0; j < 28; ++j){
-            if (gameMap[i][j] == 1){
+            if (gameMap[i][j] == 1)
                 painter.drawRect(j / 28.0 * rect().width(), i / 31.0 * rect().height(), rect().width() / 28.0, rect().height() / 31.0);
-            }
+        }
+    }
+
+
+    painter.setBrush(Qt::darkMagenta);
+
+    for (int i = 0; i < 31; ++i){
+        for (int j = 0; j < 28; ++j){
+            if (gameMap[i][j] == 3)
+                painter.drawRect(j / 28.0 * rect().width(), i / 31.0 * rect().height(), rect().width() / 28.0, rect().height() / 31.0);
         }
     }
 }
@@ -74,8 +87,14 @@ void PacmanArena::tick(){
     update();
 }
 
+void PacmanArena::transferPoint(){
+    emit foodEaten();
+}
+
 void PacmanArena::restartGame(){
     std::copy(&gameStartMap[0][0], &gameStartMap[0][0]+gameRows*gameColumns,&gameMap[0][0]);
+    player->setStartCoordinates(17, 13);
+    update();
     // player->xPos = rect().width();
     // player->yPos = rect().height();
     // player->radius = rect().width() / columns;

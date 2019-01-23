@@ -69,6 +69,9 @@ void GameBoard::keyPressEvent(QKeyEvent *event)
 void GameBoard::increasePoints()
 {
     points->display(points->value() + 1);
+
+    // if (points->value() == 246)
+        // youWon();
 }
 
 
@@ -76,4 +79,5 @@ void GameBoard::newGame()
 {
     points->display(0);
     pacmanArena->restartGame();
+    this->setFocus();
 }

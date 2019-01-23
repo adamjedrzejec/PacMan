@@ -14,14 +14,17 @@ public:
     void tick();
     void drawPlayer(QPainter &painter);
     void setStartCoordinates(int row, int col);
+signals:
+    void foodEaten();
 protected:
     void keyPressEvent(QKeyEvent *event);
 private:
     PacmanArena *arena;
+    int animationTimer;
     void move();
     int currentRow, currentColumn;
-    int radius;
     int playerDir;
+    int rotation;
 };
 
 
